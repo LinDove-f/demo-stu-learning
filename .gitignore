@@ -1,10 +1,37 @@
-# Maven 编译产物
+HELP.md
 target/
-*/target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# IDEA 配置
-.idea/
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
 *.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
 
 # Gradle 残留
 .gradle/
@@ -14,7 +41,7 @@ build.gradle.kts
 settings.gradle
 settings.gradle.kts
 
-# 日志文件
+# 日志
 logs/
 *.log
 
@@ -22,6 +49,6 @@ logs/
 .DS_Store
 Thumbs.db
 
-# 本地环境配置
+# 本地配置文件
 application-local.yml
 application-local.properties

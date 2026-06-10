@@ -4,7 +4,6 @@ import com.attust.mp.common.PageResult;
 import com.attust.mp.common.Result;
 import com.attust.mp.module.entity.StudentEntity;
 import com.attust.mp.module.service.StudentService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,28 +32,28 @@ public class StudentController {
 
     @PostMapping("/add")
     public Result<StudentEntity> add(@RequestBody StudentEntity studentEntity) {
-        studentService.add(studentEntity);
+        studentService.save(studentEntity);
         return Result.success(studentEntity);
     }
 
     @PostMapping("/update")
     public Result<StudentEntity> update(@RequestBody StudentEntity studentEntity) {
-        studentService.update(studentEntity);
+        studentService.updateById(studentEntity);
         return Result.success(studentEntity);
     }
 
     @DeleteMapping("/delete")
     public Result<Void> delete(@RequestParam Long id) {
-        studentService.delete(id);
+        studentService.removeById(id);
         return Result.success();
     }
 
-    @GetMapping("/getByName")
+    /*@GetMapping("/getByName")
     public Result<List<StudentEntity>> getByName(@RequestParam String name) {
         return Result.success(studentService.getByName(name));
-    }
+    }*/
 
-    @GetMapping("/multiConditionQuery")
+    /*@GetMapping("/multiConditionQuery")
     public Result<List<StudentEntity>> multiConditionQuery(@RequestParam String name, @RequestParam Integer minAge, @RequestParam Integer maxAge, @RequestParam String major) {
         return Result.success(studentService.multiConditionQuery(name, minAge, maxAge, major));
     }
@@ -63,12 +62,14 @@ public class StudentController {
     public Result<List<StudentEntity>> orderByAgeDesc() {
         return Result.success(studentService.orderByAgeDesc());
     }
+    */
 
     @GetMapping("/pageQuery")
-    public Result<IPage<StudentEntity>> pageQuery(@RequestParam Long page, @RequestParam Long pageSize) {
-        return Result.success(studentService.pageQuery(page, pageSize));
+    public Result<PageResult<StudentEntity>> pageQuery(@RequestParam Long page, @RequestParam Long pageSize) {
+        return Result.success(studentService.queryPage(page, pageSize));
     }
 
+    /*
     @GetMapping("/pageQueryByMajor")
     public Result<IPage<StudentEntity>> pageQueryByMajor(@RequestParam Long page, @RequestParam Long pageSize, @RequestParam String major) {
         return Result.success(studentService.pageQueryByMajor(page, pageSize, major));
@@ -79,5 +80,5 @@ public class StudentController {
     public Result<PageResult<StudentEntity>> pageResult(@RequestParam Long page, @RequestParam Long pageSize, @RequestParam String major) {
         IPage<StudentEntity> iPage = studentService.pageQueryByMajor(page, pageSize, major);
         return Result.success(new PageResult<>(iPage));
-    }
+    }*/
 }
