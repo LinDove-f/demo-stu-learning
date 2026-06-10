@@ -1,0 +1,27 @@
+# Maven 编译产物
+target/
+*/target/
+
+# IDEA 配置
+.idea/
+*.iml
+
+# Gradle 残留
+.gradle/
+gradle/
+build.gradle
+build.gradle.kts
+settings.gradle
+settings.gradle.kts
+
+# 日志文件
+logs/
+*.log
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 本地环境配置
+application-local.yml
+application-local.properties
