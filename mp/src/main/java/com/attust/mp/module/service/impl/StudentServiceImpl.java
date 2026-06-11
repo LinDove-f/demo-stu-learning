@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper,StudentEntity>implements StudentService {
-    @Autowired
-    private StudentMapper studentMapper;
 
     @Override
     public PageResult<StudentEntity> queryPage(Long page, Long pageSize) {
