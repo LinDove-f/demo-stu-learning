@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
  * {@code @create} 2026-06-11-14:06
  */
 @RestController
-@RequestMapping("/student")
 public class LoginController {
     @Autowired
     private SysUserService sysUserService;

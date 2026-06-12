@@ -1,5 +1,6 @@
 package com.attust.mp.module.service.impl;
 
+import com.attust.mp.common.TokenStore;
 import com.attust.mp.dto.LoginDTO;
 import com.attust.mp.module.entity.SysUserEntity;
 import com.attust.mp.module.mapper.SysUserMapper;
@@ -34,6 +35,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
 
         LoginVO loginVO = new LoginVO();
         loginVO.setToken(token).setUsername(user.getUsername()).setNickname(user.getNickname()).setRole(user.getRole());
+        TokenStore.put(token,loginVO);
         return loginVO;
     }
 }
