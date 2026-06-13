@@ -2,6 +2,7 @@ package com.attust.mp.module.service.impl;
 
 import com.attust.mp.common.TokenStore;
 import com.attust.mp.dto.LoginDTO;
+import com.attust.mp.exception.BusinessException;
 import com.attust.mp.module.entity.SysUserEntity;
 import com.attust.mp.module.mapper.SysUserMapper;
 import com.attust.mp.module.service.SysUserService;
@@ -25,11 +26,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
         SysUserEntity user = this.getOne(wrapper);
 
         if (user == null) {
-            throw new RuntimeException("用户不存在");
+            throw new BusinessException(401,"用户不存在");
         }
 
         if(!user.getPassword().equals(loginDTO.getPassword())) {
-            throw new RuntimeException("密码错误");
+            throw new BusinessException(401,"密码错误");
         }
         String token = UUID.randomUUID().toString();
 
