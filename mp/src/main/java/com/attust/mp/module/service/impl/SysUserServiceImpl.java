@@ -9,6 +9,8 @@ import com.attust.mp.module.service.SysUserService;
 import com.attust.mp.vo.LoginVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -19,17 +21,25 @@ import java.util.UUID;
  */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity> implements SysUserService {
+    private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
+
     @Override
     public LoginVO login(LoginDTO loginDTO) {
+        log.info("[Flow-3] 进入 SysUserServiceImpl.login, username={}", loginDTO.getUsername());
+
         LambdaQueryWrapper<SysUserEntity> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SysUserEntity::getUsername, loginDTO.getUsername());
         SysUserEntity user = this.getOne(wrapper);
 
         if (user == null) {
+            log.warn("[AUTH] 用户名不存在, username={}",loginDTO.getUsername());
+
             throw new BusinessException(401,"用户不存在");
         }
 
         if(!user.getPassword().equals(loginDTO.getPassword())) {
+            log.warn("[AUTH] 密码错误，username={}",loginDTO.getUsername());
+
             throw new BusinessException(401,"密码错误");
         }
         String token = UUID.randomUUID().toString();
@@ -37,6 +47,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
         LoginVO loginVO = new LoginVO();
         loginVO.setToken(token).setUsername(user.getUsername()).setNickname(user.getNickname()).setRole(user.getRole());
         TokenStore.put(token,loginVO);
+
+        log.info("[AUTH] 登录成功, username={}", user.getUsername());
+
         return loginVO;
     }
 }
