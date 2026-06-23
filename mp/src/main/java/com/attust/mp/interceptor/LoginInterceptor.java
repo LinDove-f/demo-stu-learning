@@ -1,18 +1,29 @@
 package com.attust.mp.interceptor;
 
 import com.attust.mp.common.TokenStore;
+import com.attust.mp.module.entity.SysUserTokenEntity;
+import com.attust.mp.module.mapper.SysUserTokenMapper;
 import com.attust.mp.vo.LoginVO;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import java.time.LocalDateTime;
 
 /**
  * @author fqlStart
  * {@code @create} 2026-06-12-9:11
  */
+@Component
 public class LoginInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private SysUserTokenMapper sysUserTokenMapper;
 
     private static final Logger log = LoggerFactory.getLogger(LoginInterceptor.class);
 
@@ -37,9 +48,14 @@ public class LoginInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        LoginVO loginVO = TokenStore.get(token);
+        LambdaQueryWrapper<SysUserTokenEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysUserTokenEntity::getToken, token)
+                .eq(SysUserTokenEntity::getStatus, 1)
+                .gt(SysUserTokenEntity::getExpireTime, LocalDateTime.now());
 
-        if (loginVO == null) {
+        SysUserTokenEntity tokenEntity = sysUserTokenMapper.selectOne(wrapper);
+
+        if (tokenEntity == null) {
             log.warn("[AUTH] token 无效，请求被拦截，uri={}", request.getRequestURI());
 
             response.setStatus(401);

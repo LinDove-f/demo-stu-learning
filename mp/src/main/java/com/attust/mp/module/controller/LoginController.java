@@ -2,8 +2,12 @@ package com.attust.mp.module.controller;
 
 import com.attust.mp.common.Result;
 import com.attust.mp.dto.LoginDTO;
+import com.attust.mp.module.entity.SysUserTokenEntity;
+import com.attust.mp.module.mapper.SysUserTokenMapper;
 import com.attust.mp.module.service.SysUserService;
 import com.attust.mp.vo.LoginVO;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
@@ -20,6 +24,9 @@ public class LoginController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private SysUserTokenMapper sysUserTokenMapper;
+
     @PostMapping("/login")
     public Result<LoginVO> login(@RequestBody LoginDTO loginDTO) {
         log.info("[FLOW-2] 进入 LoginController.login, username={}", loginDTO.getUsername());
@@ -29,5 +36,27 @@ public class LoginController {
         log.info("[FLOW-2] 登录接口执行完成, username={}", loginDTO.getUsername());
 
         return Result.success(loginVO);
+    }
+
+    @PostMapping("/logOut")
+    public Result<Void> logOut(HttpServletRequest request) {
+        String token = request.getHeader("token");
+
+        if(token == null || token.trim().isEmpty()){
+            return Result.success();
+        }
+
+        LambdaQueryWrapper<SysUserTokenEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysUserTokenEntity::getToken,token)
+                .eq(SysUserTokenEntity::getStatus, 1);
+
+        SysUserTokenEntity tokenEntity = sysUserTokenMapper.selectOne(wrapper);
+
+        if(tokenEntity != null){
+            tokenEntity.setStatus(0);
+            sysUserTokenMapper.updateById(tokenEntity);
+        }
+
+        return Result.success();
     }
 }

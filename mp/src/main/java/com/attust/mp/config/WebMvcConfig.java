@@ -13,10 +13,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    private final LoginInterceptor loginInterceptor;
+
+    public WebMvcConfig(LoginInterceptor loginInterceptor) {
+        this.loginInterceptor = loginInterceptor;
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(new LoginInterceptor())
+        registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/student/**")
                 .excludePathPatterns("/login");
     }
