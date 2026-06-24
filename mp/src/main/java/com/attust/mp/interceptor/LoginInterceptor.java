@@ -1,9 +1,7 @@
 package com.attust.mp.interceptor;
 
-import com.attust.mp.common.TokenStore;
 import com.attust.mp.module.entity.SysUserTokenEntity;
 import com.attust.mp.module.mapper.SysUserTokenMapper;
-import com.attust.mp.vo.LoginVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

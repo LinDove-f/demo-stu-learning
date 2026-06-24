@@ -1,6 +1,5 @@
 package com.attust.mp.module.service.impl;
 
-import com.attust.mp.common.TokenStore;
 import com.attust.mp.dto.LoginDTO;
 import com.attust.mp.exception.BusinessException;
 import com.attust.mp.module.entity.SysUserEntity;
@@ -54,16 +53,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
         LoginVO loginVO = new LoginVO();
         loginVO.setToken(token).setUsername(user.getUsername()).setNickname(user.getNickname()).setRole(user.getRole());
 
+        saveUserToken(user.getId(), token);
+
+        log.info("[AUTH] 登录成功, username={}", user.getUsername());
+
+        return loginVO;
+    }
+
+    private void saveUserToken(Long userId,String token){
         SysUserTokenEntity tokenEntity = new SysUserTokenEntity();
-        tokenEntity.setUserId(user.getId());
+
+        tokenEntity.setUserId(userId);
         tokenEntity.setToken(token);
         tokenEntity.setExpireTime(LocalDateTime.now().plusHours(2));
         tokenEntity.setStatus(1);
 
         sysUserTokenMapper.insert(tokenEntity);
-
-        log.info("[AUTH] 登录成功, username={}", user.getUsername());
-
-        return loginVO;
     }
 }
