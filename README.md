@@ -1,4 +1,4 @@
-# demo-stu-learning
+# demo-stu-learning(重点是“mp”模块)
 
 这是我的Spring boot + Mybatis Plus的一个小demo，主要是为了学习和练习使用Spring boot和Mybatis Plus框架。
 
