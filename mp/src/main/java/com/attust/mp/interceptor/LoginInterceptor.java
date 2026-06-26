@@ -29,6 +29,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
 
         log.info("[Flow-1] LoginInterceptor.preHandle, url={}, method={}",
                 request.getRequestURI(),

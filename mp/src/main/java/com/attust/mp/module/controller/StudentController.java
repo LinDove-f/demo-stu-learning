@@ -48,10 +48,10 @@ public class StudentController {
         return Result.success();
     }
 
-    /*@GetMapping("/getByName")
-    public Result<List<StudentEntity>> getByName(@RequestParam String name) {
+    @GetMapping("/getByName")
+    public Result<PageResult<StudentEntity>> getByName(@RequestParam String name) {
         return Result.success(studentService.getByName(name));
-    }*/
+    }
 
     /*@GetMapping("/multiConditionQuery")
     public Result<List<StudentEntity>> multiConditionQuery(@RequestParam String name, @RequestParam Integer minAge, @RequestParam Integer maxAge, @RequestParam String major) {

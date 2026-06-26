@@ -27,7 +27,7 @@ public interface StudentService extends IService<StudentEntity> {
     // 根据姓名获取学生信息
 
     // 多条件查询
-
+    PageResult<StudentEntity> getByName(String name);
     // 排序查询
 
     // 分页查询
